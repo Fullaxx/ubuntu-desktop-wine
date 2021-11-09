@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
 # Pull base image
-FROM fullaxx/ubuntu-desktop
+FROM fullaxx/ubuntu-desktop:bionic
 MAINTAINER Brett Kuskie <fullaxx@gmail.com>
 
 # ------------------------------------------------------------------------------
@@ -8,18 +8,11 @@ MAINTAINER Brett Kuskie <fullaxx@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C
 
-# https://itsfoss.com/wine-5-release/
-# https://computingforgeeks.com/how-to-install-wine-on-ubuntu-linux/
-# https://www.tecmint.com/install-wine-on-ubuntu-and-linux-mint/
 # ------------------------------------------------------------------------------
 # Install prerequisites and clean up
-RUN apt-get update && \
-    apt-get install -y software-properties-common unzip cabextract && \
-    wget -q https://dl.winehq.org/wine-builds/winehq.key -O- | apt-key add - && \
-    dpkg --add-architecture i386 && \
-    apt-add-repository "deb https://dl.winehq.org/wine-builds/ubuntu $(lsb_release -cs) main" && \
+RUN dpkg --add-architecture i386 && \
     apt-get update && \
-    apt-get install --install-recommends -y winehq-stable winetricks && \
+    apt-get install -y tree unzip xz-utils cabextract wine32 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
